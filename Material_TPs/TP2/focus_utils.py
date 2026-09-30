@@ -1,4 +1,3 @@
-"""Utilidades compartidas por tp_focus.ipynb y fourier_explicado.ipynb."""
 from functools import lru_cache
 
 import cv2 as cv
@@ -20,14 +19,18 @@ def read_frames(path):
 
 
 def show(images, titles, cols=None, cmap="gray", size=3.5):
-    """Grilla de imágenes; las de 3 canales se asumen BGR (convención OpenCV)."""
+    """Grilla de imágenes. Si no es en blanco y negro se asumen BGR"""
     cols = cols or len(images)
     rows = int(np.ceil(len(images) / cols))
-    fig, axs = plt.subplots(rows, cols, figsize=(size * cols, size * rows * 0.75), squeeze=False)
+    fig, axs = plt.subplots(
+        rows, cols, figsize=(size * cols, size * rows * 0.75), squeeze=False
+    )
     for ax in axs.ravel():
         ax.axis("off")
     for ax, img, title in zip(axs.ravel(), images, titles):
-        ax.imshow(cv.cvtColor(img, cv.COLOR_BGR2RGB) if img.ndim == 3 else img, cmap=cmap)
+        ax.imshow(
+            cv.cvtColor(img, cv.COLOR_BGR2RGB) if img.ndim == 3 else img, cmap=cmap
+        )
         ax.set_title(title)
     plt.tight_layout()
     plt.show()
